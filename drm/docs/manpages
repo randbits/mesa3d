@@ -1,0 +1,9 @@
+1. drm.7
+2. drmAvailable.3
+3. drm-gem.7
+4. drmHandleEvent.3
+5. drm-kms.7
+6. drm-memory.7
+7. drm-mm.7
+8. drmModeGetResources.3
+9. drm-ttm.7
