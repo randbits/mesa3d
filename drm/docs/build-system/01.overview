@@ -1,0 +1,24 @@
+
+Top level makefile:
+Makefile.am
+
+1. libdrm
+   CFLAGS :     include/drm
+   LDADD  :     -lrt (see CLOCK_LIBS in configure.ac)
+                we use clock_gettime to check for timeouts in drmWaitVBlank
+   SOURCES:	xf86atomic.h
+		xf86drm.c
+		xf86drm.h
+		xf86drmHash.c
+		xf86drmMode.c
+		xf86drmMode.h
+		xf86drmRandom.c
+		xf86drmSL.c
+		xf86mm.h
+2. libkms/
+3. intel/
+4. nouveau/
+5. radeon/
+6. omap/
+7. exynos/
+8. freedreno/

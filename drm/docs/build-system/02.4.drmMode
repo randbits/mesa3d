@@ -1,0 +1,22 @@
+drm Mode Setting 
+
+###libdrm
+   CFLAGS :     include/drm
+   LDADD  :     -lrt (see CLOCK_LIBS in configure.ac)
+                we use clock_gettime to check for timeouts in drmWaitVBlank
+   SOURCES:	1' utilities
+		xf86atomic.h	:
+		libdrm_lists.h	: 
+		xf86drmSL.c	: Skip list support
+		xf86drmRandom.c : PRNG random number generator implementation
+		xf86drmHash.c   : Small hash table support for integer --> integer mapping
+		2' memory management
+		xf86mm.h	: drm memory management.
+				  drm Fence and Buffer Object definitions and functions
+		3' wrapper for drm ioctls
+		xf86drm.c,     xf86drm.c	: user-level interface to DRM device
+		xf86drmMode.c, xf86drmMode.c	: header for DRM modesetting interface.
+
+###xf86drmMode.c xf86drmMode.h
+It aims to provide a RandR1.2 compatible interface for modesettings in the kernel,
+the interface is also ment to be used by libraries.

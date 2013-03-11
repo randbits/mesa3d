@@ -1,0 +1,34 @@
+intel
+
+##intel/: Makefile.am
+
+libdrm_intel
+
+PROGRAMS: test_decode.
+HEADERS : libdrm/
+LDADD	: ../libdrm.la
+SOURCES	: 
+	  intel_aub.h		: AUB file format spec.
+
+	  intel_bufmgr.c
+	  intel_bufmgr.h
+	  intel_bufmgr_priv.h
+
+	  intel_bufmgr_fake.c
+	  intel_bufmgr_gem.c
+	  intel_decode.c
+	  intel_chipset.h
+	  mm.c
+	  mm.h
+	  intel_debug.h
+
+1. intel_aub.h
+   The AUB file is a file format used by Intel's internal simulation
+   and other validation tools. It can be used at various levels by a
+   driver to input state to the simulated hardware or a replaying debugger.
+   we choose to dump AUB files using the trace block format for ease of
+   implemementation -- dump out the blocks of memory as plain blobs and insert
+   ring commands to execute the batchbuffer blob.
+
+2. intel_bufmgr.c intel_bufmgr.h
+   buffer object, buffer manager

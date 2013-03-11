@@ -1,0 +1,69 @@
+
+Top level makefile:
+Makefile.am
+
+###libdrm
+   CFLAGS :     include/drm
+   LDADD  :     -lrt (see CLOCK_LIBS in configure.ac)
+                we use clock_gettime to check for timeouts in drmWaitVBlank
+   SOURCES:	1' utilities
+		xf86atomic.h	:
+		libdrm_lists.h	: 
+		xf86drmSL.c	: Skip list support
+		xf86drmRandom.c : PRNG random number generator implementation
+		xf86drmHash.c   : Small hash table support for integer --> integer mapping
+		2' memory management
+		xf86mm.h	: drm memory management.
+				  drm Fence and Buffer Object definitions and functions
+		3' wrapper for drm ioctls
+		xf86drm.c,     xf86drm.c	: user-level interface to DRM device
+		xf86drmMode.c, xf86drmMode.c	: header for DRM modesetting interface.
+
+
+1. xf86atomic.h: Private definitions for atomic operations
+   platform abstraction for atomic type and atom operations:
+   1) types
+   atomic_t	:
+		an opaque structure.
+   2) operations (all defined by macros)
+   (refer to GNU GCC Manual: 6.51 Legacy __sync built-in functions for atomic memory access.
+    http://gcc.gnu.org/onlinedocs/gcc-4.7.2/gcc/_005f_005fsync-Builtins.html#_005f_005fsync-Builtins)
+   atomic_read(x)	: read atomic variable value, 
+			  return the atomic value(an integer).
+   atomic_set(x, val)	: set atomic variable @x to @val.
+			  return @val.
+   atomic_inc(x)	: increment atomic variable @x by one.
+			  (void) forces discarding return values.
+   atomic_dec_and_test(x): decrease @x by one 
+			  return TRUE if previous value of @x is one;FALSE otherwise.
+   atomic_add(x, v)	: increment atomic variable @x by v
+			  (void) forces discarding return values.
+   atomic_dec(x, v)	: decrement atomic variable @x by v
+			  (void) forces discarding return values.
+   atomic_cmpxchg(x, oldv, newv): perform an atomic compare and swap. 
+			  if the current value of @x(actually &x->atomic) if @oldv,
+			  then write @newv into @x.
+			  returns the contents of @x before the operation.namely x.atomic.
+2. libdrm_lists.h :  a double linked list implementation similar to Linux Kernel list implementation.
+   1) types:
+   drmMMListHead	:
+			struct _drmMMListHead
+			{
+				struct _drmMMListHead* prev;
+				struct _drmMMListHead* next;
+			}
+   2) operations (all written in macros)
+   DRMINITLISTHEAD(__item)	: drm init list head
+   DRMLISTADD(__item, __list)	: add @__item to @__list head
+   DRMLISTADDTAIL(__item, __list): add @__item to @__list tail
+   DRMLISTDEL(__item)		: delete @__item from a list.
+   DRMLISTDELINIT(__item)	: delete @__item from a list and initialze @__item.
+   DRMLISTENTRY(__type, __item, __field): return a pointer(casted to (__type*)) to @__field of @__item.
+   DRMLISTEMPTY(__item)		: check if @__item points to itself
+   DRMLISTSINGLE(__list)	: check if @__list contains only a single element.
+   DRMLISTFOREACH(__item, __list): iterate through @__list.
+   DRMLISTFOREACHSAFE(__item, __temp, __list) : 
+   DRMLISTFOREACHSAFEREVERSE(__item, __temp, __list):
+   DRMLISTFOREACHENTRY(__item, __list, __head) :
+   DRMLISTFOREACHENTRYSAFE(__item, __temp, __list, __head):
+   DRMLISTJOIN(__list, __join):

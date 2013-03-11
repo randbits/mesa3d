@@ -1,0 +1,56 @@
+libkms
+build on top of libdrm.
+
+##libkms/: Makefile.am
+
+HEADERS : libkms.h
+LIBADD	: ../libdrm.la (dynamic linked to libdrm)
+SOURCES	: 
+	  libkms.h
+	  intenal.h
+	  api.c
+	  linux.c
+ 
+	  dumb.c	//
+	  intel.c
+	  vmwgfx.c
+	  nouveau.c
+	  radeon.c
+
+0. libkms.h : exported interfaces
+   1) enumerations
+      enum kms_attrib
+      enum kms_bo_type
+   2) kms_* functions
+
+1. internal.h : kms interfaces
+   1) struct kms_driver
+   2) struct kms_bo 
+      all implementations should define their own struct *_bo and 
+      embeds this struct as the first field.
+   3) platform-specific kms_driver creation functions
+
+2. api.c : wrapper for platform specific functions
+   API dispatcher through "struct kms_driver"
+   kms driver
+   1) kms_create	: linux_create
+   2) kms_get_prop	: kms driver ->get_prop
+   3) kms_destroy
+   kms bo
+   1) kms_bo_create	: kms driver ->bo_create
+   2) kms_bo_get_prop
+   3) kms_bo_map	: kms driver ->bo_map
+   4) kms_bo_unmap	: kms driver ->bo_unmap
+   5) kms_bo_destroy	: kms driver ->bo_destroy
+
+3. linux.c : implements linux_create
+   linux_create
+   1' dumb_create : if success. return immediately(means use dumb by default)
+   2' linux_from_udev : obsolets
+   3' linux_from_sysfs: read platform info from sys/ and invoking
+                        platform-specific *_create function.
+
+4. dumb.c  
+   vmwgfx.c
+   nouveau.c
+   radeon.c
