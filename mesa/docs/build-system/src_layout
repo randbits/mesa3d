@@ -1,0 +1,39 @@
+1. bin/:
+	build system artifacts (autotools scripts etc.)
+2. m4/:
+	m4 scripts.
+3. docs/:
+	documentation.
+4. lib/:
+	libraries built
+
+5. include/:
+	headers.
+6. src/:
+	source code.
+	3) gbm/ => libgbm.so 
+	   generic buffer management.
+	1) egl/
+	   1' main/ => libEGL.[la, so] 
+	      main EGL code. 
+	   2' wayland/
+	      EGL wayland platform
+	   3' drivers/
+	   4' docs/
+	5) glsl/
+	   GLSL compiler(builtin)
+	6) glx/ => libGL.so
+	8) mapi/
+	   1' es1api/ => libGLESv1_CM.so 
+	   2' es2api/ => libGLESv2.so
+	   3' glapi/
+	   4' mapi/
+	   5' shared-glapi/ => libglapi.so
+	   6' vgapi/  => libOpenVG.so
+	2) gallium/
+	   LLVM-based Gallium drivers
+	9) mesa/
+	   Quite complex
+
+	4) getopt/	: Glibc option parsing.
+	7) gtest/	: Google Test Framework 
